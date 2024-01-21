@@ -53,7 +53,13 @@ async def on_message(message):
         if message.author == bot.user:
             return
 
-        if 'Elys' not in message.content and 'elys' not in message.content:
+        # Verifica se a mensagem é uma resposta a uma mensagem anterior
+        if message.reference and message.reference.message_id in [msg.id for msg in bot.cached_messages]:
+            referenced_message = await message.channel.fetch_message(message.reference.message_id)
+            last_ten_messages.append(referenced_message.content)
+
+        # Verifica se "Elys" está na mensagem atual ou se é uma resposta a uma mensagem anterior
+        if 'Elys' not in message.content and 'elys' not in message.content and not message.reference:
             return
 
         system_message = {
