@@ -30,6 +30,7 @@ channel_ids = [
     '1194359415013384205'   # innovationManagement
 ]
 
+
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=g4f.models.gpt_4_turbo,
@@ -56,9 +57,9 @@ async def on_message(message):
 
         if message.author == bot.user:
             return
-        
+
         bot_message = {"role": "bot", "content": ""}
-    
+
         # Verifica se "Elys" está na mensagem atual ou se é uma resposta a uma mensagem anterior
         if not message.content.lower().count('elys'):
             if not message.reference:
@@ -68,9 +69,10 @@ async def on_message(message):
             referenced_message = await message.channel.fetch_message(message.reference.message_id)
             if referenced_message.author != bot.user:
                 return
-            
+
             # Atualiza bot_message com a mensagem anterior do bot
-            bot_message["content"] = f"{bot.user.name}: {referenced_message.content}"
+            bot_message["content"] = f"{bot.user.name}: {
+                referenced_message.content}"
 
         system_message = {
             "role": "system",
@@ -104,12 +106,12 @@ async def on_message(message):
             Priscilla also known as pritrevizan. : she is very intelligent, she is a great programmer and an excellent UX & Design professional, one of the best I've ever seen, one day I want to have her talent.
             Gui Real: He is a very intelligent guy, he is a great programmer and an excellent professional, very creative and smart, in addition to being an excellent teacher and speaker, he is reputed to be rich and own a company.
             Pietro known as piterin: he is very humble, funny and hard working, always willing to help, I have never seen him, he is daytime and likes to study only at night, sometimes I think he has a screw loose.
-            {os.getenv('assistant')} Favorite team: Manchester City; a big fan of Pep Guardiola.
+            {os.getenv('assistant')} Favorite team: Manchester City; a big fan of Pep Guardiola.w
             Favorite player: Messi (sorry, Cristiano Ronaldo fans).
             """
         }
 
-        user_messages = [{"role": "user", "content": f"{message.author.name}: {message.content}"} for msg in last_ten_messages]
+        user_messages = [{"role": "user", "content": f"{message.author.name}: { message.content}"} for msg in last_ten_messages]
 
         messages = [system_message, bot_message] + user_messages
 
